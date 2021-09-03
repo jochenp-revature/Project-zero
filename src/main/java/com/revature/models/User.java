@@ -10,8 +10,11 @@ import java.util.List;
  */
 public class User implements Serializable {
 
+	/**
+	 * 
+	 */
 	//  hover over class > click add serial generated version ID
-	private static final long serialVersionUID = -4553508689874995351L;
+	private static final long serialVersionUID = -3948973157150678790L;
 	private int id; // be represented in our DB as a PRIMARY KEY (and SERIAL)
 	private String username;
 	private String password;

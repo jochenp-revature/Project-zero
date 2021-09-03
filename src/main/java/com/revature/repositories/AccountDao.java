@@ -79,7 +79,7 @@ public class AccountDao implements IAccountDao {
 			
 			String sql = "SELECT sophiag.accounts.id, sophiag.accounts.balance FROM sophiag.accounts\r\n" + 
 					"	INNER JOIN sophiag.users_account_jt \r\n" + 
-					"		ON sophiag.accounts.id = sophiag.users_account_jt.acc_owner 	\r\n" + 
+					"		ON sophiag.accounts.id = sophiag.users_account_jt.account	\r\n" + 
 					"			WHERE sophiag.users_account_jt.acc_owner = ?;"; // this will have to be a joins statement
 			
 			PreparedStatement stmt = conn.prepareStatement(sql);

@@ -28,7 +28,7 @@ import org.apache.log4j.Logger;
  */
 public class ConnectionUtil {
 	
-	private static Logger log = Logger.getLogger(ConnectionUtil.class);
+	//private static Logger log = Logger.getLogger(ConnectionUtil.class);
 
 	private static Connection conn = null;
 
@@ -48,11 +48,11 @@ public class ConnectionUtil {
 
 		try { // check if the ConnectionUtil instance exists or is open first...
 			if (conn != null && !conn.isClosed()) {
-				log.info("returned reused connection");
+				//log.info("returned reused connection");
 				return conn;
 			}
 		} catch (SQLException e) {
-			log.error("we failed to re-use a connection.");
+			//log.error("we failed to re-use a connection.");
 			return null;
 		}
 
@@ -65,8 +65,7 @@ public class ConnectionUtil {
 
 		try {
 			// Use the Properties object to fetch properties from a specified file path (application.properties)
-			prop.load(new FileReader(
-					"C:\\Users\\SophieGavrila\\Desktop\\demos\\week2\\JDBCdemo\\src\\main\\resources\\application.properties"));
+			prop.load(new FileReader("/Users/jpen/Documents/workspace-spring-tool-suite-4-4.11.1.RELEASE/project-0-jochenp-revature/src/main/resources/application.properties"));
 			url = prop.getProperty("url");
 			username = prop.getProperty("username");
 			password = prop.getProperty("password");
@@ -77,14 +76,15 @@ public class ConnectionUtil {
 			 * explicitly using the same class loader as the current application. 
 			 */
 			conn = DriverManager.getConnection(url, username, password);
-
-			log.info("Database Connection Established");
+			
+			System.out.println("Connection successful!");
+			//log.info("Database Connection Established");
 
 		} catch (IOException e) {
-			log.error("Cannot locate application.properties file.");
+			//log.error("Cannot locate application.properties file.");
 			e.printStackTrace();
 		} catch (SQLException e) {
-			log.error("Cannot establish database connection");
+			//log.error("Cannot establish database connection");
 			return null;
 		}
 		

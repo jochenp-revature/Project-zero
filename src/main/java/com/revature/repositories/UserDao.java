@@ -52,7 +52,7 @@ import com.revature.util.ConnectionUtil;
 
 public class UserDao implements IUserDao {
 	
-	private static Logger log = Logger.getLogger(UserDao.class);
+	//private static Logger log = Logger.getLogger(UserDao.class);
 
 	@Override
 	public int insert(User u) { // Think about the User u passed as a parameter as being generated from the input that
@@ -64,7 +64,7 @@ public class UserDao implements IUserDao {
 
 			/* We start with a SQL String -- "RETURNING" allows us to return the PK of the
 			 * user inserted/created */
-			String sql = "INSERT INTO sophiag.users (username, pwd, user_role) VALUES (?, ?, ?) RETURNING sophiag.users.id";
+			String sql = "INSERT INTO jochenp.users (username, pwd, user_role) VALUES (?, ?, ?) RETURNING jochenp.users.id";
 
 			/*
 			 * Defend against SQL injection with a Prepared Statement! If you don't use a
@@ -101,14 +101,14 @@ public class UserDao implements IUserDao {
 				int id = rs.getInt(1); // the "1" parameter represents the 1st column of data that we want
 				
 				// log the User's id that was inserted
-				log.info("Successfully insertes User with id: " + id);
+				//log.info("Successfully insertes User with id: " + id);
 				
 				// if everything goes well, we return that fetched PK
 				return id;
 			}
 
 		} catch (SQLException e) {
-			log.error("Unable to insert User");
+			//log.error("Unable to insert User");
 			e.printStackTrace();
 		}
 
