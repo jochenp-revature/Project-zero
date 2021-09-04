@@ -28,3 +28,28 @@ CREATE TABLE jochenp.applications (
 	id SERIAL PRIMARY KEY,
 	app_owner INTEGER NOT NULL REFERENCES jochenp.users(id)
 );
+
+SELECT * FROM jochenp.users;
+
+SELECT * FROM jochenp.accounts;
+
+SELECT * FROM jochenp.users_accounts_jt;
+
+INSERT INTO jochenp.users (username, pwd, user_role)
+	VALUES ('Larry', 'secret', 'Employee'),
+			('Mary', '1234', 'Customer');
+
+INSERT INTO jochenp.accounts (balance, acc_owner)
+	VALUES (500, 5), (1000, 6);
+
+INSERT INTO jochenp.users_accounts_jt
+	VALUES (1, 1),
+	(2, 3),
+	(5, 3),
+	(6, 4);
+	
+
+
+
+
+

@@ -35,7 +35,7 @@ public class AccountDao implements IAccountDao {
 			// create a statement + a sql string to pass through and execute against the DB
 			 Statement stmt =  conn.createStatement();
 			 
-			 String sql = "SELECT * FROM accounts";
+			 String sql = "SELECT * FROM jochenp.accounts";
 	
 			 // send the statement to the DB
 			 ResultSet rs = stmt.executeQuery(sql);
@@ -77,10 +77,10 @@ public class AccountDao implements IAccountDao {
 		
 		try(Connection conn = ConnectionUtil.getConnection()) {
 			
-			String sql = "SELECT sophiag.accounts.id, sophiag.accounts.balance FROM sophiag.accounts\r\n" + 
-					"	INNER JOIN sophiag.users_account_jt \r\n" + 
-					"		ON sophiag.accounts.id = sophiag.users_account_jt.account	\r\n" + 
-					"			WHERE sophiag.users_account_jt.acc_owner = ?;"; // this will have to be a joins statement
+			String sql = "SELECT jochenp.accounts.id, jochenp.accounts.balance FROM jochenp.accounts\r\n" + 
+					"	INNER JOIN jochenp.users_accounts_jt \r\n" + 
+					"		ON jochenp.accounts.id = jochenp.users_accounts_jt.account	\r\n" + 
+					"			WHERE jochenp.users_accounts_jt.acc_owner = ?;"; // this will have to be a joins statement
 			
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			

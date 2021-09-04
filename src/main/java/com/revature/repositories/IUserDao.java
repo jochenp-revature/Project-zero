@@ -12,11 +12,11 @@ import com.revature.models.User;
 public interface IUserDao { // all CRUD methods
 	
 	int insert(User u); // we aim to return the primary key of the user inserted into the DB
-//	User findByUserName(String username); // READ method
-//	List<User> findAll();
-//	User findById(int id);
-//	boolean update(User u); // takes in a whoel user and update's its record in the database
-//	boolean delete(int id); 
+	User findByUserName(String username); // READ method
+	List<User> findAll();
+	User findById(int id);
+	boolean update(User u); // takes in a whoel user and update's its record in the database
+	boolean delete(int id); 
 	
 	
 	// TODO: add other abstract methods

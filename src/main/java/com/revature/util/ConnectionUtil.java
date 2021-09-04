@@ -28,7 +28,7 @@ import org.apache.log4j.Logger;
  */
 public class ConnectionUtil {
 	
-	//private static Logger log = Logger.getLogger(ConnectionUtil.class);
+	private static Logger log = Logger.getLogger(ConnectionUtil.class);
 
 	private static Connection conn = null;
 
@@ -48,11 +48,11 @@ public class ConnectionUtil {
 
 		try { // check if the ConnectionUtil instance exists or is open first...
 			if (conn != null && !conn.isClosed()) {
-				//log.info("returned reused connection");
+				log.info("Returned re-used connection.");
 				return conn;
 			}
 		} catch (SQLException e) {
-			//log.error("we failed to re-use a connection.");
+			log.error("We failed to re-use a connection.");
 			return null;
 		}
 
@@ -77,14 +77,14 @@ public class ConnectionUtil {
 			 */
 			conn = DriverManager.getConnection(url, username, password);
 			
-			System.out.println("Connection successful!");
-			//log.info("Database Connection Established");
+			//System.out.println("Connection successful!");
+			log.info("Database connection established.");
 
 		} catch (IOException e) {
-			//log.error("Cannot locate application.properties file.");
+			log.error("Cannot locate application.properties file.");
 			e.printStackTrace();
 		} catch (SQLException e) {
-			//log.error("Cannot establish database connection");
+			log.error("Cannot establish database connection.");
 			return null;
 		}
 		

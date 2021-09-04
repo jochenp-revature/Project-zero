@@ -1,0 +1,19 @@
+2021-09-03 16:23:12 INFO  com.revature.LoggingDriver:41 - Application has started!
+2021-09-03 16:23:12 ERROR com.revature.LoggingDriver:46 - Something has gone horribly wrong
+2021-09-03 16:23:12 INFO  com.revature.LoggingDriver:49 - Application has successfully completed!
+2021-09-03 17:22:50 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-03 17:22:50 INFO  revature.util.ConnectionUtil:51 - Returned re-used connection.
+2021-09-03 17:25:21 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-03 17:25:21 INFO  revature.util.ConnectionUtil:51 - Returned re-used connection.
+2021-09-03 18:56:05 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-03 18:56:05 INFO  revature.util.ConnectionUtil:51 - Returned re-used connection.
+2021-09-03 18:56:43 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-03 18:56:43 INFO  revature.util.ConnectionUtil:51 - Returned re-used connection.
+2021-09-03 20:31:58 INFO  revature.services.UserService:17 - Registering new user....
+2021-09-03 20:31:58 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-03 20:31:58 INFO  revature.repositories.UserDao:104 - Successfully inserted User with id: 7
+2021-09-03 20:31:58 INFO  revature.services.UserService:37 - Registration of user with id 7 was successful.
+2021-09-03 20:33:33 INFO  revature.services.UserService:17 - Registering new user....
+2021-09-03 20:33:34 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-03 20:33:34 INFO  revature.repositories.UserDao:104 - Successfully inserted User with id: 8
+2021-09-03 20:33:34 INFO  revature.services.UserService:37 - Registration of user with id 8 was successful.
