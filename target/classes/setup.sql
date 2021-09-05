@@ -44,11 +44,13 @@ INSERT INTO jochenp.accounts (balance, acc_owner)
 
 INSERT INTO jochenp.users_accounts_jt
 	VALUES (1, 1),
-	(2, 3),
+	(3, 3),
 	(5, 3),
 	(6, 4);
 	
-
+UPDATE jochenp.accounts
+SET jochenp.accounts.balance = 1.25
+WHERE jochenp.accounts.id = 3;
 
 
 

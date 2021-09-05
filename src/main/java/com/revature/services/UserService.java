@@ -40,22 +40,27 @@ public class UserService {
 	}
 	
 	public User login(String username, String password) {
-		// call some dao methods that check if this user exists, maybe return an 
-		// array of all and iterate through each one to check is username and password are the sem
-		
-		// use the fiundByUsername dao method, then check that that user has the same password as the one passed through here
-		
-		return null;
+		// use the findByUsername dao method, then check that that user has the same password as the one passed through here
+		// should also check role to which menu to supply?
+		UserDao udao = new UserDao();
+		User u = new User();
+		u = udao.findByUserName(username);
+		if (u.getPassword().equals(password)) {
+			System.out.println("Correct password.");
+		} else {
+			System.out.println("Incorrect password.");
+		}
+		return u;
 	}
 
 	
 	
 	public void printAllUsers() {
-		
+		UserDao udao = new UserDao();
 		List<User> users = udao.findAll();
 			
 		users.forEach(u -> System.out.println(u));
-		// you could also use an enahnced for loop 
+		// you could also use an enhanced for loop 
 	}
 	
 	

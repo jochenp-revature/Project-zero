@@ -17,3 +17,24 @@
 2021-09-03 20:33:34 INFO  revature.util.ConnectionUtil:81 - Database connection established.
 2021-09-03 20:33:34 INFO  revature.repositories.UserDao:104 - Successfully inserted User with id: 8
 2021-09-03 20:33:34 INFO  revature.services.UserService:37 - Registration of user with id 8 was successful.
+2021-09-04 08:22:40 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-04 11:24:21 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-04 11:24:21 WARN  revature.repositories.UserDao:137 - Failed to retrieve user with username Batman
+2021-09-04 11:30:44 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-04 11:30:44 WARN  revature.repositories.UserDao:137 - Failed to retrieve user with username Batman
+2021-09-04 11:37:18 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-04 11:37:18 WARN  revature.repositories.UserDao:137 - Failed to retrieve user with username Batman
+2021-09-04 11:38:04 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-04 11:39:03 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-04 11:39:03 WARN  revature.repositories.UserDao:141 - Failed to retrieve user with username Batman
+2021-09-04 11:39:29 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-04 11:43:39 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-04 11:46:17 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-04 11:48:11 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-04 11:50:18 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-04 12:43:16 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-04 14:22:39 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-04 17:25:15 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-04 19:18:10 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-04 19:18:10 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-04 19:18:10 INFO  revature.repositories.AccountDao:141 - Successfully updated balance of account 3 to 1001.25

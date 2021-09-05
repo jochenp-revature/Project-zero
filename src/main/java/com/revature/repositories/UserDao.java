@@ -4,11 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.revature.models.Account;
 import com.revature.models.User;
 import com.revature.util.ConnectionUtil;
 
@@ -122,14 +125,46 @@ public class UserDao implements IUserDao {
 
 	@Override
 	public User findByUserName(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		User u = new User();
+		try (Connection conn = ConnectionUtil.getConnection()) {
+			String sql = "SELECT * FROM jochenp.users WHERE jochenp.users.username = ?;";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, username);
+			ResultSet rs = stmt.executeQuery();
+			rs.next();
+			u.setId(rs.getInt("id"));
+			u.setUsername(rs.getString("username"));
+			u.setPassword(rs.getString("pwd"));
+			u.setRole(rs.getString("user_role")); // what is the proper rs getter here?
+		} catch (SQLException e) {
+			log.warn("Failed to retrieve user with username " + username);
+			e.printStackTrace();
+		}
+		return u;
 	}
 
 	@Override
 	public List<User> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		List<User> userList = new ArrayList<User>();
+		try (Connection conn = ConnectionUtil.getConnection()) {
+			String sql = "SELECT * FROM jochenp.users;";
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				int id = rs.getInt("id"); // you can specify the column number OR you can specify the column name
+				String username = rs.getString("username");
+				String password = rs.getString("pwd");
+//				String role = rs.getString("user_role"); // again unsure how to get or set this enum!
+
+				User u = new User(id, username, password, null, null);
+				userList.add(u);
+			}
+		} catch (SQLException e) {
+			// catch a sql error if necessary
+			log.warn("A SQL EXception occurred when querying all users.");
+			e.printStackTrace();
+		}
+		return userList;
 	}
 
 	@Override
