@@ -15,7 +15,7 @@ public interface IUserDao { // all CRUD methods
 	User findByUserName(String username); // READ method
 	List<User> findAll();
 	User findById(int id);
-	boolean update(User u); // takes in a whoel user and update's its record in the database
+	void update(int id, String username, String password, String role); // takes in a whoel user and update's its record in the database
 	boolean delete(int id); 
 	
 	

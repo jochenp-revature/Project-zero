@@ -10,6 +10,7 @@ public interface IAccountDao {
 	List<Account> findAll(); // returns list of account objects...
 	Account findById(int id);
 	List<Account> findByOwner(int userId); // because a user could have multiple accounts
+	double getBalance(int accId);
 	void updateBalance(int accId, double balance);
 	boolean delete(int id);
 

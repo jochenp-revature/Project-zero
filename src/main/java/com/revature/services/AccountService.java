@@ -1,27 +1,50 @@
 package com.revature.services;
 
-import org.apache.log4j.Logger;
+import java.util.ArrayList;
+import java.util.List;
 import com.revature.models.Account;
 import com.revature.repositories.AccountDao;
 
 public class AccountService {
 	
-	private static Logger log = Logger.getLogger(UserService.class);
-	
-	public Account deposit(int accId, double amount) {
-		AccountDao adao = new AccountDao();
-		double balance = amount + adao.getBalance(accId);
-		adao.updateBalance(accId, balance); // need to verify this further?
-		Account a = new Account(accId, balance);
+	public Account open(Account a) {
 		return a;
 	}
 	
-	public Account withdraw(Account id, double amount) {
-		return null;
+	public Account deposit(int accId, double deposit) {
+		AccountDao adao = new AccountDao();
+		double newBalance = deposit + adao.getBalance(accId);
+		adao.updateBalance(accId, newBalance); // need to verify this further?
+		Account a = new Account(accId, newBalance);
+		return a;
 	}
 	
-	public Account transfer(Account sourceId, Account targetId, double amount) {
-		return null;
+	public Account withdraw(int accId, double withdraw) {
+		AccountDao adao = new AccountDao();
+		double newBalance = adao.getBalance(accId) - withdraw;
+		if (newBalance < 0) {
+			System.out.println("Insufficient funds.");
+		} else
+		adao.updateBalance(accId, newBalance); // need to verify this further?
+		Account a = new Account(accId, newBalance);
+		return a;
+	}
+	
+	public List<Account> transfer(int sourceId, int targetId, double amount) {
+		AccountDao adao = new AccountDao();
+		double newSourceBalance = adao.getBalance(sourceId) - amount;
+		double newTargetBalance = adao.getBalance(targetId) + amount;
+		if (newSourceBalance < 0) {
+			System.out.println("Insufficient funds.");
+		} else
+		adao.updateBalance(sourceId, newSourceBalance);
+		adao.updateBalance(targetId, newTargetBalance);// need to verify this further?
+		Account a = new Account(sourceId, newSourceBalance);
+		Account b = new Account(targetId, newTargetBalance);
+		List<Account> list = new ArrayList<Account>();
+		list.add(a);
+		list.add(b);
+		return list;
 	}
 
 }

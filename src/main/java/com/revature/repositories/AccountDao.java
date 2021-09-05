@@ -7,9 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.log4j.Logger;
-
 import com.revature.models.Account;
 import com.revature.util.ConnectionUtil;
 
@@ -19,99 +17,94 @@ public class AccountDao implements IAccountDao {
 
 	@Override
 	public int insert(Account a) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override // 11:10am ET
-	public List<Account> findAll() { // here we have to make an actual query
-
-		// start out with an empty arraylist of accounts
-		List<Account> accList = new ArrayList<Account>();
-
-		// obtain a connection, surround with try with resources block
-		try (Connection conn = ConnectionUtil.getConnection()) {
-
-			// create a statement + a sql string to pass through and execute against the DB
-			Statement stmt = conn.createStatement();
-
-			String sql = "SELECT * FROM jochenp.accounts";
-
-			// send the statement to the DB
-			ResultSet rs = stmt.executeQuery(sql);
-
-			// iterate through the response while(rs.next())
-			while (rs.next()) {
-
-				// for each row, grab the data of that account
-				int id = rs.getInt("id"); // you can specify the column number OR you can specify the column name
-				double balance = rs.getDouble("balance");
-
-				// construct the account object
-				Account a = new Account(id, balance);
-
-				// add the account object to the list
-				accList.add(a);
+		try {
+			Connection conn = ConnectionUtil.getConnection();
+			String sql = "INSERT INTO accounts (id, balance) VALUES (?, ?) RETURNING id;";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, a.getId());
+			stmt.setDouble(2, a.getBalance());
+			ResultSet rs;
+			if ((rs = stmt.executeQuery()) != null) {
+				rs.next();
+				int id = rs.getInt("id");
+				log.info("Successfully inserted account with id: " + id);
+				return id;
 			}
-
 		} catch (SQLException e) {
-			// catch a sql error if necessary
-			log.warn("A SQL EXception occurred when querying all accounts");
+			log.error("Unable to create account.");
 			e.printStackTrace();
 		}
+		return -1;
+	}
 
-		// return the account list
+	@Override
+	public List<Account> findAll() { // here we have to make an actual query
+		List<Account> accList = new ArrayList<Account>();
+		try (Connection conn = ConnectionUtil.getConnection()) {
+			Statement stmt = conn.createStatement();
+			String sql = "SELECT * FROM jochenp.accounts";
+			ResultSet rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				double balance = rs.getDouble("balance");
+				Account a = new Account(id, balance);
+				accList.add(a);
+			}
+		} catch (SQLException e) {
+			log.warn("A SQL Exception occurred when querying all accounts");
+			e.printStackTrace();
+		}
 		return accList;
 	}
 
 	@Override
 	public Account findById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Account a = new Account();
+		try (Connection conn = ConnectionUtil.getConnection()) {
+			String sql = "SELECT FROM accounts WHERE id = ?;";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, id);
+			ResultSet rs = stmt.executeQuery();
+			rs.next();
+			int returnedId = rs.getInt("id");
+			double balance = rs.getDouble("balance");
+			a.setId(returnedId);
+			a.setBalance(balance);
+		} catch (SQLException e) {
+			log.warn("Failed to retrieve account with id " + id);
+			e.printStackTrace();
+		}
+		return a;
 	}
 
 	@Override
 	public List<Account> findByOwner(int userId) {
-
 		List<Account> ownedAccounts = new ArrayList<Account>();
-
 		try (Connection conn = ConnectionUtil.getConnection()) {
-
 			String sql = "SELECT jochenp.accounts.id, jochenp.accounts.balance FROM jochenp.accounts\r\n"
 					+ "	INNER JOIN jochenp.users_accounts_jt \r\n"
 					+ "		ON jochenp.accounts.id = jochenp.users_accounts_jt.account	\r\n"
 					+ "			WHERE jochenp.users_accounts_jt.acc_owner = ?;"; // this will have to be a joins
 																					// statement
-
 			PreparedStatement stmt = conn.prepareStatement(sql);
-
-			// how do we set the ?
-			stmt.setInt(1, userId);
-
+			stmt.setInt(1, userId); // how do we set the ?
 			ResultSet rs = stmt.executeQuery();
-
 			while (rs.next()) {
-
 				int id = rs.getInt("id");
 				double balance = rs.getDouble("balance");
-
 				Account a = new Account(id, balance);
-
 				// in the case that there are duplicates, DON'T add them to the arraylist
 				if (!ownedAccounts.contains(a)) {
 					ownedAccounts.add(a);
 				}
 			}
-
 		} catch (SQLException e) {
-			log.warn("Failed to retrieve all accounts owned by user with id " + userId);
+			log.error("Failed to retrieve all accounts owned by user with id " + userId);
 			e.printStackTrace();
 		}
-
 		return ownedAccounts;
-
 	}
-	
+
 	public double getBalance(int accId) {
 		double balance = 0;
 		try (Connection conn = ConnectionUtil.getConnection()) {
@@ -141,15 +134,25 @@ public class AccountDao implements IAccountDao {
 				log.info("Successfully updated balance of account " + accId + " to " + balance);
 			}
 		} catch (SQLException e) {
-			log.error("Failed to update accounts with id " + accId);
+			log.error("Failed to update account with id " + accId);
 			e.printStackTrace();
 		}
 	}
 
 	@Override
 	public boolean delete(int id) {
-		// TODO Auto-generated method stub
-		return false;
+		try (Connection conn = ConnectionUtil.getConnection()) {
+			String sql = "DELETE FROM accounts WHERE id = ?;";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, id);
+			stmt.executeQuery();
+			log.info("Successfully deleted account " + id);
+		} catch (SQLException e) {
+			log.error("Failed to delete account with id " + id);
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 }

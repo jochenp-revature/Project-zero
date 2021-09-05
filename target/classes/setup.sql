@@ -48,10 +48,10 @@ INSERT INTO jochenp.users_accounts_jt
 	(5, 3),
 	(6, 4);
 	
-UPDATE jochenp.accounts
-SET jochenp.accounts.balance = 1.25
-WHERE jochenp.accounts.id = 3;
+UPDATE accounts
+SET balance = 1.25
+WHERE id = 3;
 
-
+SELECT balance FROM accounts WHERE id = 1;
 
 

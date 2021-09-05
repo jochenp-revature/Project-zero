@@ -38,3 +38,21 @@
 2021-09-04 19:18:10 INFO  revature.util.ConnectionUtil:81 - Database connection established.
 2021-09-04 19:18:10 INFO  revature.util.ConnectionUtil:81 - Database connection established.
 2021-09-04 19:18:10 INFO  revature.repositories.AccountDao:141 - Successfully updated balance of account 3 to 1001.25
+2021-09-05 10:00:49 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-05 10:00:49 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-05 10:00:49 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-05 10:00:49 INFO  revature.repositories.AccountDao:141 - Successfully updated balance of account 3 to 1.25
+2021-09-05 10:00:49 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-05 10:00:49 INFO  revature.repositories.AccountDao:141 - Successfully updated balance of account 1 to 1100.15
+2021-09-05 10:05:17 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-05 10:05:17 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-05 10:05:17 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-05 10:05:17 INFO  revature.repositories.AccountDao:141 - Successfully updated balance of account 4 to 0.0
+2021-09-05 10:05:17 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-05 10:05:17 INFO  revature.repositories.AccountDao:141 - Successfully updated balance of account 3 to 1001.25
+2021-09-05 10:06:40 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-05 10:06:40 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-05 10:06:40 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-05 10:06:40 INFO  revature.repositories.AccountDao:141 - Successfully updated balance of account 3 to 1.25
+2021-09-05 10:06:40 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-05 10:06:40 INFO  revature.repositories.AccountDao:141 - Successfully updated balance of account 4 to 1000.0

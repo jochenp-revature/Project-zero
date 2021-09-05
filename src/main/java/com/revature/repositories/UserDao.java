@@ -8,10 +8,7 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.log4j.Logger;
-
-import com.revature.models.Account;
 import com.revature.models.User;
 import com.revature.util.ConnectionUtil;
 
@@ -58,68 +55,25 @@ public class UserDao implements IUserDao {
 	private static Logger log = Logger.getLogger(UserDao.class);
 
 	@Override
-	public int insert(User u) { // Think about the User u passed as a parameter as being generated from the input that
-								// a user gives through the console
+	public int insert(User u) {
 		try {
-
-			// Capture the single instance of the JDBC Connection (this is called a session)
 			Connection conn = ConnectionUtil.getConnection();
-
-			/* We start with a SQL String -- "RETURNING" allows us to return the PK of the
-			 * user inserted/created */
 			String sql = "INSERT INTO jochenp.users (username, pwd, user_role) VALUES (?, ?, ?) RETURNING jochenp.users.id";
-
-			/*
-			 * Defend against SQL injection with a Prepared Statement! If you don't use a
-			 * Prepared Statement, a malicious actor could try to insert a statement like
-			 * "DROP TABLE USERS". SQL Injection is typically the #1 Cyber Threat listed by
-			 * OWASP. https://owasp.org/www-project-top-ten/
-			 */
 			PreparedStatement stmt = conn.prepareStatement(sql);
-
-			/**
-			 * Here we are replacing the ?'s of the sql String with the instance variables
-			 * of the User u object passed as a parameter to be persisted. 
-			 */
-			stmt.setString(1, u.getUsername()); // The "1" represents the 1st ? in the SQL insertion String
+			stmt.setString(1, u.getUsername());
 			stmt.setString(2, u.getPassword());
-
-			/** Transposing an the ENUM from Java -> SQL, is tough because we have to
-			 *  accommodate for a separate custom ENUM type.
-			 */
 			stmt.setObject(3, u.getRole(), Types.OTHER);
-
-			/**
-			 * When we run stmt.executeQuery(), it returns a ResultSet Object. The ResultSet
-			 * Interface has all of the methods we need to iterate over the returned data. */
 			ResultSet rs;
-
-			// first we check to see if the returned result set is NOT null...
 			if ((rs = stmt.executeQuery()) != null) {
-				
-				// move the cursor of the ResultSet forward 1 with next()
 				rs.next();
-				
-				// all we need is the FIRST column's data (which is the PK of the inserted User)
-				int id = rs.getInt(1); // the "1" parameter represents the 1st column of data that we want
-				
-				// log the User's id that was inserted
+				int id = rs.getInt("id");
 				log.info("Successfully inserted User with id: " + id);
-				
-				// if everything goes well, we return that fetched PK
 				return id;
 			}
-
 		} catch (SQLException e) {
 			log.error("Unable to insert User.");
 			e.printStackTrace();
 		}
-
-		/**
-		 * Since this method returns an int (as specified in the IUserDao Interface),
-		 * return -1 if things go wrong inserting a User in the DB, because Users can't
-		 * have a negative ID
-		 */
 		return -1;
 	}
 
@@ -135,7 +89,7 @@ public class UserDao implements IUserDao {
 			u.setId(rs.getInt("id"));
 			u.setUsername(rs.getString("username"));
 			u.setPassword(rs.getString("pwd"));
-			u.setRole(rs.getString("user_role")); // what is the proper rs getter here?
+//			u.setRole(rs.getString("user_role")); // what is the proper getter and setter here?
 		} catch (SQLException e) {
 			log.warn("Failed to retrieve user with username " + username);
 			e.printStackTrace();
@@ -155,12 +109,10 @@ public class UserDao implements IUserDao {
 				String username = rs.getString("username");
 				String password = rs.getString("pwd");
 //				String role = rs.getString("user_role"); // again unsure how to get or set this enum!
-
 				User u = new User(id, username, password, null, null);
 				userList.add(u);
 			}
 		} catch (SQLException e) {
-			// catch a sql error if necessary
 			log.warn("A SQL EXception occurred when querying all users.");
 			e.printStackTrace();
 		}
@@ -169,20 +121,57 @@ public class UserDao implements IUserDao {
 
 	@Override
 	public User findById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		User u = new User();
+		try (Connection conn = ConnectionUtil.getConnection()) {
+			String sql = "SELECT FROM jochenp.users WHERE jochenp.users.id = ?;";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, id);
+			ResultSet rs = stmt.executeQuery();
+			rs.next();
+			u.setId(rs.getInt("id"));
+			u.setUsername(rs.getString("username"));
+			u.setPassword(rs.getString("pwd"));
+//			u.setRole(rs.getString("user_role")); // what is the proper getter and setter here?
+		} catch (SQLException e) {
+			log.warn("Failed to retrieve user with id " + id);
+			e.printStackTrace();
+		}
+		return u;
 	}
 
 	@Override
-	public boolean update(User u) {
-		// TODO Auto-generated method stub
-		return false;
+	public void update(int id, String username, String password, String role) {
+		try (Connection conn = ConnectionUtil.getConnection()) {
+			String sql = "UPDATE users SET username = ?, pwd = ?, user_role = ? WHERE id = ? RETURNING id;";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, username);
+			stmt.setString(2, password);
+			stmt.setObject(3, role, Types.OTHER);
+			stmt.setInt(4, id);
+			ResultSet rs = stmt.executeQuery();
+			rs.next();
+			int returnedId = rs.getInt("id");
+			log.info("Successfully updated user " + returnedId);
+		} catch (SQLException e) {
+			log.error("Failed to update user with id " + id);
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public boolean delete(int id) {
-		// TODO Auto-generated method stub
-		return false;
+		try (Connection conn = ConnectionUtil.getConnection()) {
+			String sql = "DELETE FROM users WHERE id = ?;";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, id);
+			stmt.executeQuery();
+			log.info("Successfully deleted user " + id);
+		} catch (SQLException e) {
+			log.error("Failed to delete user with id " + id);
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 	
 	// TODO: add more IUserDao method implementations

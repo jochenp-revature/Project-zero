@@ -54,4 +54,6 @@ WHERE id = 3;
 
 SELECT balance FROM accounts WHERE id = 1;
 
+UPDATE users SET username = 'Robin', pwd = 'Holy...', user_role = 'Employee' WHERE id = 1 RETURNING id;
+
 
