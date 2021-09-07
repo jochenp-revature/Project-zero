@@ -9,6 +9,8 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
+
+import com.revature.models.Role;
 import com.revature.models.User;
 import com.revature.util.ConnectionUtil;
 
@@ -89,7 +91,8 @@ public class UserDao implements IUserDao {
 			u.setId(rs.getInt("id"));
 			u.setUsername(rs.getString("username"));
 			u.setPassword(rs.getString("pwd"));
-//			u.setRole(rs.getString("user_role")); // what is the proper getter and setter here?
+			u.setRole(Role.Customer);
+//			u.setRole(rs.getObject("user_role")); // what is the proper getter and setter here?
 		} catch (SQLException e) {
 			log.warn("Failed to retrieve user with username " + username);
 			e.printStackTrace();

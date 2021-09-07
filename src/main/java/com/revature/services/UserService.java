@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.revature.App;
 import com.revature.exceptions.RegisterUserFailedException;
+import com.revature.models.Role;
 import com.revature.models.User;
 import com.revature.repositories.UserDao;
 
@@ -33,10 +35,18 @@ public class UserService {
 		User u = new User();
 		u = udao.findByUserName(username);
 		if (u.getPassword().equals(password)) {
-			System.out.println("Correct password.");
-			// check role and supply appropriate menu
+			log.info("User " + username + " has successfully logged in.");
+			if (u.getRole().equals(Role.Admin) ) {
+				App.adminMenu(u);
+			} else if (u.getRole().equals(Role.Employee)) {
+				App.employeeMenu(u);
+			} else {
+				App.customerMenu(u);
+			}
 		} else {
 			System.out.println("Incorrect password.");
+			log.warn("Login attempt for user " + username + " failed.");
+			App.loginScript();
 		}
 	}
 

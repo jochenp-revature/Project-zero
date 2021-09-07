@@ -19,10 +19,9 @@ public class AccountDao implements IAccountDao {
 	public int insert(Account a) {
 		try {
 			Connection conn = ConnectionUtil.getConnection();
-			String sql = "INSERT INTO accounts (id, balance) VALUES (?, ?) RETURNING id;";
+			String sql = "INSERT INTO accounts (acc_owner) VALUES (?) RETURNING id;";
 			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, a.getId());
-			stmt.setDouble(2, a.getBalance());
+			stmt.setInt(1, a.getAcc_owner());
 			ResultSet rs;
 			if ((rs = stmt.executeQuery()) != null) {
 				rs.next();
@@ -38,7 +37,7 @@ public class AccountDao implements IAccountDao {
 	}
 
 	@Override
-	public List<Account> findAll() { // here we have to make an actual query
+	public List<Account> findAll() {
 		List<Account> accList = new ArrayList<Account>();
 		try (Connection conn = ConnectionUtil.getConnection()) {
 			Statement stmt = conn.createStatement();
@@ -47,7 +46,9 @@ public class AccountDao implements IAccountDao {
 			while (rs.next()) {
 				int id = rs.getInt("id");
 				double balance = rs.getDouble("balance");
-				Account a = new Account(id, balance);
+				int acc_owner = rs.getInt("acc_owner");
+				boolean active = rs.getBoolean("active");
+				Account a = new Account(id, balance, acc_owner, active);
 				accList.add(a);
 			}
 		} catch (SQLException e) {
@@ -81,18 +82,16 @@ public class AccountDao implements IAccountDao {
 	public List<Account> findByOwner(int userId) {
 		List<Account> ownedAccounts = new ArrayList<Account>();
 		try (Connection conn = ConnectionUtil.getConnection()) {
-			String sql = "SELECT jochenp.accounts.id, jochenp.accounts.balance FROM jochenp.accounts\r\n"
-					+ "	INNER JOIN jochenp.users_accounts_jt \r\n"
-					+ "		ON jochenp.accounts.id = jochenp.users_accounts_jt.account	\r\n"
-					+ "			WHERE jochenp.users_accounts_jt.acc_owner = ?;"; // this will have to be a joins
-																					// statement
+			String sql = "SELECT * FROM jochenp.accounts WHERE acc_owner = ?;";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, userId); // how do we set the ?
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				int id = rs.getInt("id");
 				double balance = rs.getDouble("balance");
-				Account a = new Account(id, balance);
+				int acc_owner = rs.getInt("acc_owner");
+				boolean active = rs.getBoolean("active");
+				Account a = new Account(id, balance, acc_owner, active);
 				// in the case that there are duplicates, DON'T add them to the arraylist
 				if (!ownedAccounts.contains(a)) {
 					ownedAccounts.add(a);
@@ -137,6 +136,24 @@ public class AccountDao implements IAccountDao {
 			log.error("Failed to update account with id " + accId);
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public boolean activate(int id) {
+		try (Connection conn = ConnectionUtil.getConnection()) {
+			String sql = "UPDATE accounts SET active = true WHERE id = ? RETURNING active;";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setDouble(1, id);
+			ResultSet rs = stmt.executeQuery();
+			rs.next();
+			if (rs.getBoolean("active") == true) {
+				log.info("Successfully activated account " + id + ".");
+			}
+		} catch (SQLException e) {
+			log.error("Failed to update account with id " + id + ".");
+			e.printStackTrace();
+		}
+		return true;
 	}
 
 	@Override

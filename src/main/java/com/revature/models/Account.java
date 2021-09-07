@@ -4,17 +4,38 @@ import java.io.Serializable;
 
 public class Account implements Serializable {
 		
+	private static final long serialVersionUID = -7919958173228399875L;
 	private int id; // primary key
-	private double balance; // in SQL this is represented by the NUMERIC data-type 
+	private double balance; // in SQL this is represented by the NUMERIC data-type
+	private int acc_owner;
+	private boolean active;
 	
 	public Account() {
 		super();
 	}
 	
-	public Account(int id, double balance) { // fields should match those in the db!
+	public Account(int id, double balance, int acc_owner, boolean active) { // fields should match those in the db!
 		super();
 		this.id = id;
 		this.balance = balance;
+		this.acc_owner = acc_owner;
+		this.active = active;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public int getAcc_owner() {
+		return acc_owner;
+	}
+
+	public void setAcc_owner(int acc_owner) {
+		this.acc_owner = acc_owner;
 	}
 
 	public int getId() {

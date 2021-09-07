@@ -12,6 +12,7 @@ public interface IAccountDao {
 	List<Account> findByOwner(int userId); // because a user could have multiple accounts
 	double getBalance(int accId);
 	void updateBalance(int accId, double balance);
+	boolean activate(int id);
 	boolean delete(int id);
 
 	

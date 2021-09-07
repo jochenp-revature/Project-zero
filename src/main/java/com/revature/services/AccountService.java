@@ -11,11 +11,11 @@ public class AccountService {
 		return a;
 	}
 	
-	public Account deposit(int accId, double deposit) {
+	public Account deposit(int id, double deposit) {
 		AccountDao adao = new AccountDao();
-		double newBalance = deposit + adao.getBalance(accId);
-		adao.updateBalance(accId, newBalance); // need to verify this further?
-		Account a = new Account(accId, newBalance);
+		double newBalance = deposit + adao.getBalance(id);
+		adao.updateBalance(id, newBalance); // need to verify this further?
+		Account a = new Account(id, newBalance, null, "true");
 		return a;
 	}
 	
