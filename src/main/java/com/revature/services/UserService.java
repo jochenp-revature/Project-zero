@@ -37,9 +37,9 @@ public class UserService {
 		if (u.getPassword().equals(password)) {
 			log.info("User " + username + " has successfully logged in.");
 			if (u.getRole().equals(Role.Admin) ) {
-				App.adminMenu(u);
+				App.adminMenu(u.getId());
 			} else if (u.getRole().equals(Role.Employee)) {
-				App.employeeMenu(u);
+				App.employeeMenu(u.getId());
 			} else {
 				App.customerMenu(u);
 			}

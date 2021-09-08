@@ -1,15 +1,22 @@
 package com.revature;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+
+import org.apache.log4j.Logger;
+
 import com.revature.models.Account;
 import com.revature.models.Role;
 import com.revature.models.User;
 import com.revature.repositories.AccountDao;
+import com.revature.repositories.UserDao;
 import com.revature.services.AccountService;
 import com.revature.services.UserService;
 
 public class App {
+	
+	private static Logger log = Logger.getLogger(App.class);
 
 	public static void main(String[] args) {
 		welcome();
@@ -67,7 +74,7 @@ public class App {
 	}
 	
 	public static void customerMenu(User u) {
-		System.out.println("Welcome, " + u.getUsername() + ", here are your accounts with the ATM CLI:");
+		System.out.println(u.getUsername() + ", here are your accounts with the ATM CLI:");
 		AccountDao adao = new AccountDao();
 		System.out.println(adao.findByOwner(u.getId()));
 		System.out.println("Press 1 to deposit, 2 to withdraw, 3 to transfer, 4 to open a new account, "
@@ -80,11 +87,11 @@ public class App {
 			input = scan.nextInt();
 		}
 		if (input == 1) {
-			depositScript();
+			depositScript(u.getId());
 		} else if (input == 2) {
-			withdrawScript();
+			withdrawScript(u.getId());
 		} else if (input == 3) {
-			transferScript();
+			transferScript(u.getId());
 		} else if (input == 4) {
 			openNewAccountScript();
 		} else if (input == 5) {
@@ -94,22 +101,23 @@ public class App {
 		
 	}
 	
-	public static void depositScript() {
+	public static void depositScript(int userId) { // should take a user id
 		Scanner scan = new Scanner(System.in);
 		System.out.println("To make a deposit, please enter the account id:");
-		int id = scan.nextInt(); // check that id exists?
-		System.out.println("Please enter the amount you wish to deposit into account id " + id + ":");
+		int accId = scan.nextInt(); // check that account exists and belongs to user?
+		System.out.println("Please enter the amount you wish to deposit into account id " + accId + ":");
 		double amount = scan.nextDouble();
 		while (amount <= 0) {
 			System.out.println("Your deposit must be greater than zero:");
 			amount = scan.nextDouble();
 		}
-		scan.close();
 		AccountService aserv = new AccountService();
-		aserv.deposit(id, amount); // should return some confirmation?
+		aserv.deposit(userId, accId, amount); // should return some confirmation?
+		System.out.println("Successfully deposited " + amount + " to account " + accId + ".");
+		// return to customerMenu?
 	}
 	
-	public static void withdrawScript() {
+	public static void withdrawScript(int userId) {
 		Scanner scan = new Scanner(System.in);
 		System.out.println("To make a withdrawal, please enter the account id:");
 		int id = scan.nextInt(); // check that id exists?
@@ -124,7 +132,7 @@ public class App {
 		aserv.withdraw(id, amount); // should return some confirmation?
 	}
 	
-	public static void transferScript() {
+	public static void transferScript(int userId) {
 		Scanner scan = new Scanner(System.in);
 		System.out.println("To transfer funds, please enter the source account id:");
 		int id1 = scan.nextInt(); // check that id exists?
@@ -145,12 +153,105 @@ public class App {
 		
 	}
 	
-	public static void employeeMenu(User u) {
-		
+	public static void employeeMenu(int userId) {
+		System.out.println("Employee menu: press 1 for user lookup, 2 for accounts lookup, 3 to approve applications, or 4 to exit:");
+		Scanner scan = new Scanner(System.in);
+		int input = scan.nextInt();
+		while (input != 1 && input != 2 && input != 3 && input != 4) {
+			System.out.println("Press 1 for user lookup, 2 for accounts lookup, 3 to approve applications, or 4 to exit:");
+			input = scan.nextInt();
+		}
+		if (input == 1) {
+			userLookup(userId);
+		} else if (input == 2) {
+			accountsLookup(userId);
+		} else if (input == 3) {
+			approveService(userId);
+		} else {
+			System.out.println("Have a nice day."); // exit
+			welcome();
+		}
+	}
+	
+	public static void userLookup(int userId) {
+		System.out.println("Please enter the user you wish to lookup:");
+		Scanner scan = new Scanner(System.in);
+		String input = scan.nextLine();
+		UserDao udao = new UserDao();
+		User u = udao.findByUserName(input);
+		System.out.println(u);
+		employeeMenu(userId);
 	}
 
-	public static void adminMenu(User u) {
-		
+	public static void accountsLookup(int userId) {
+		System.out.println("Please enter the user whose accounts you wish to find:");
+		Scanner scan = new Scanner(System.in);
+		int input = scan.nextInt();
+		AccountDao adao = new AccountDao();
+		System.out.println(adao.findByOwner(input));
+		employeeMenu(userId);
+	}
+
+	public static void approveService(int userId) {
+		AccountDao adao = new AccountDao();
+		List<Account> accounts = adao.findInactive();
+		System.out.println("Here is a list of all inactive accounts pending approval:");
+		System.out.println(accounts);
+		System.out.println("Please enter the account number to approve:");
+		Scanner scan = new Scanner(System.in);
+		int accId = scan.nextInt();
+		boolean active = adao.activate(accId);
+		if (active == true) {
+			System.out.println("Account " + accId + " has been approved.");
+			log.info("Account " + accId + " was approved by user " + userId);
+		} else {
+			System.out.println("There was a problem activating account " + accId + ". Please try again.");
+		}
+	}
+
+	public static void adminMenu(int userId) {
+		System.out.println("Admin menu: press 1 for user lookup, 2 for accounts lookup, 3 to approve applications, "
+				+ "4 to deposit, 5 to withdraw, 6 to transfer, 7 to delete account, or 8 to exit:");
+		Scanner scan = new Scanner(System.in);
+		int input = scan.nextInt();
+		while (input != 1 && input != 2 && input != 3 && input != 4) {
+			System.out.println("Press 1 for user lookup, 2 for accounts lookup, 3 to approve applications, "
+					+ "4 to deposit, 5 to withdraw, 6 to transfer, 7 to delete account, or 8 to exit:");
+			input = scan.nextInt();
+		}
+		if (input == 1) {
+			userLookup(userId);
+		} else if (input == 2) {
+			accountsLookup(userId);
+		} else if (input == 3) {
+			approveService(userId);
+		} else if (input == 4) {
+			depositScript(userId);
+		} else if (input == 5) {
+			withdrawScript(userId);
+		} else if (input == 6) {
+			transferScript(userId);
+		} else if (input == 7) {
+			deleteScript(userId);
+		} else {
+			System.out.println("Have a nice day."); // exit
+			welcome();
+		}
+	}
+	
+	public static void deleteScript(int userId) {
+		System.out.println("Please enter the account number to be deleted:");
+		Scanner scan = new Scanner(System.in);
+		int accId = scan.nextInt();
+		AccountDao adao = new AccountDao();
+		boolean confirm = adao.delete(accId);
+		if (confirm == true) {
+			System.out.println("Account " + accId + " has been deleted.");
+			log.info("Account " + accId + " was deleted by user " + userId);
+		} else {
+			System.out.println("There was a problem deleting account " + accId + ". Please try again.");
+		}
+		adminMenu(userId);
 	}
 		
 //		User u = new User(0, username, password, Role.Customer, new ArrayList<Account>());

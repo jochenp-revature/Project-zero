@@ -91,8 +91,7 @@ public class UserDao implements IUserDao {
 			u.setId(rs.getInt("id"));
 			u.setUsername(rs.getString("username"));
 			u.setPassword(rs.getString("pwd"));
-			u.setRole(Role.Customer);
-//			u.setRole(rs.getObject("user_role")); // what is the proper getter and setter here?
+			u.setRole(Role.valueOf(rs.getString("user_role")));
 		} catch (SQLException e) {
 			log.warn("Failed to retrieve user with username " + username);
 			e.printStackTrace();

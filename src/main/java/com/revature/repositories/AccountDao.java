@@ -103,6 +103,30 @@ public class AccountDao implements IAccountDao {
 		}
 		return ownedAccounts;
 	}
+	
+	public List<Account> findInactive() {
+		List<Account> pendingAccounts = new ArrayList<Account>();
+		try (Connection conn = ConnectionUtil.getConnection()) {
+			String sql = "SELECT * FROM jochenp.accounts WHERE active = false;";
+			PreparedStatement stmt = conn.prepareStatement(sql); // how do we set the ?
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				double balance = rs.getDouble("balance");
+				int acc_owner = rs.getInt("acc_owner");
+				boolean active = rs.getBoolean("active");
+				Account a = new Account(id, balance, acc_owner, active);
+				// in the case that there are duplicates, DON'T add them to the arraylist
+				if (!pendingAccounts.contains(a)) {
+					pendingAccounts.add(a);
+				}
+			}
+		} catch (SQLException e) {
+			log.error("Failed to retrieve all inactive accounts.");
+			e.printStackTrace();
+		}
+		return pendingAccounts;
+	}
 
 	public double getBalance(int accId) {
 		double balance = 0;
@@ -123,7 +147,7 @@ public class AccountDao implements IAccountDao {
 	@Override
 	public void updateBalance(int accId, double balance) {
 		try (Connection conn = ConnectionUtil.getConnection()) {
-			String sql = "UPDATE accounts SET balance = ? WHERE id = ? RETURNING balance;";
+			String sql = "UPDATE accounts SET balance = ? WHERE id = ? RETURNING balance;"; /// add active requirement!
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setDouble(1, balance);
 			stmt.setInt(2, accId);
@@ -131,6 +155,12 @@ public class AccountDao implements IAccountDao {
 			rs.next();
 			if (rs.getDouble("balance") == balance) {
 				log.info("Successfully updated balance of account " + accId + " to " + balance);
+				System.out.println("Successfully updated balance of account " + accId + " to " + balance);
+				// go back to customer menu?
+			} else {
+				log.warn("Problem updating balance of account " + accId);
+				System.out.println("Problem updating balance of account " + accId + "Please try again.");
+				// go back to customer menu?
 			}
 		} catch (SQLException e) {
 			log.error("Failed to update account with id " + accId);
@@ -140,6 +170,7 @@ public class AccountDao implements IAccountDao {
 	
 	@Override
 	public boolean activate(int id) {
+		boolean active = false;
 		try (Connection conn = ConnectionUtil.getConnection()) {
 			String sql = "UPDATE accounts SET active = true WHERE id = ? RETURNING active;";
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -147,13 +178,18 @@ public class AccountDao implements IAccountDao {
 			ResultSet rs = stmt.executeQuery();
 			rs.next();
 			if (rs.getBoolean("active") == true) {
-				log.info("Successfully activated account " + id + ".");
+				active = true;
+				log.info("Successfully activated account " + id);
+			} else {
+				active = false;
+				log.warn("Failed to update account with id " + id);
 			}
 		} catch (SQLException e) {
-			log.error("Failed to update account with id " + id + ".");
+			log.error("Failed to update account with id " + id);
 			e.printStackTrace();
+			active = false;
 		}
-		return true;
+		return active;
 	}
 
 	@Override
