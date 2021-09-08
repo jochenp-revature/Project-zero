@@ -79,12 +79,12 @@ public class AccountDao implements IAccountDao {
 	}
 
 	@Override
-	public List<Account> findByOwner(int userId) {
+	public List<Account> findByOwner(int userId) { // IGNORES INACTIVE accounts!
 		List<Account> ownedAccounts = new ArrayList<Account>();
 		try (Connection conn = ConnectionUtil.getConnection()) {
-			String sql = "SELECT * FROM jochenp.accounts WHERE acc_owner = ?;";
+			String sql = "SELECT * FROM jochenp.accounts WHERE acc_owner = ? AND active = true;";
 			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, userId); // how do we set the ?
+			stmt.setInt(1, userId);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				int id = rs.getInt("id");
@@ -128,7 +128,7 @@ public class AccountDao implements IAccountDao {
 		return pendingAccounts;
 	}
 
-	public double getBalance(int accId) {
+	public double getBalance(int accId) { // VALIDATE WITH USER ID!!!!
 		double balance = 0;
 		try (Connection conn = ConnectionUtil.getConnection()) {
 			String sql = "SELECT balance FROM jochenp.accounts WHERE id = ?;";
@@ -145,7 +145,7 @@ public class AccountDao implements IAccountDao {
 	}
 
 	@Override
-	public void updateBalance(int accId, double balance) {
+	public void updateBalance(int accId, double balance) { // validate with uid!!!!
 		try (Connection conn = ConnectionUtil.getConnection()) {
 			String sql = "UPDATE accounts SET balance = ? WHERE id = ? RETURNING balance;"; /// add active requirement!
 			PreparedStatement stmt = conn.prepareStatement(sql);

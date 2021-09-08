@@ -31,7 +31,9 @@ CREATE TABLE jochenp.applications (
 
 SELECT * FROM jochenp.users;
 
-SELECT * FROM jochenp.accounts;
+SELECT * FROM jochenp.accounts
+
+SELECT * FROM jochenp.accounts WHERE active = false;
 
 SELECT * FROM jochenp.users_accounts_jt;
 

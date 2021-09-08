@@ -27,6 +27,8 @@ public class UserService {
 			throw new RegisterUserFailedException("Failed to insert the user.");
 		}
 		log.info("Registration of user with id " + u.getId() + " was successful.");
+		AccountService aserv = new AccountService();
+		aserv.open(generatedId);
 		return u;
 	}
 	
@@ -37,16 +39,16 @@ public class UserService {
 		if (u.getPassword().equals(password)) {
 			log.info("User " + username + " has successfully logged in.");
 			if (u.getRole().equals(Role.Admin) ) {
-				App.adminMenu(u.getId());
+				App.adminMenu(u);
 			} else if (u.getRole().equals(Role.Employee)) {
-				App.employeeMenu(u.getId());
+				App.employeeMenu(u);
 			} else {
 				App.customerMenu(u);
 			}
 		} else {
 			System.out.println("Incorrect password.");
 			log.warn("Login attempt for user " + username + " failed.");
-			App.loginScript();
+			App.welcome();
 		}
 	}
 
