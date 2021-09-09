@@ -274,3 +274,55 @@
 2021-09-08 16:43:30 INFO  revature.util.ConnectionUtil:81 - Database connection established.
 2021-09-08 16:43:30 INFO  revature.util.ConnectionUtil:81 - Database connection established.
 2021-09-08 16:43:30 INFO  revature.repositories.AccountDao:157 - Successfully updated balance of account 7 to 25000.0
+2021-09-08 18:57:08 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-08 18:57:08 INFO  revature.services.UserService:40 - User Mary has successfully logged in.
+2021-09-08 18:57:08 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-08 19:33:29 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-08 19:33:29 INFO  revature.services.UserService:40 - User Mary has successfully logged in.
+2021-09-08 19:33:29 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-08 19:44:19 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-08 19:44:20 INFO  revature.services.UserService:40 - User Mary has successfully logged in.
+2021-09-08 19:44:20 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-08 19:46:59 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-08 19:46:59 INFO  revature.services.UserService:40 - User Mary has successfully logged in.
+2021-09-08 19:46:59 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-08 19:47:34 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-08 19:47:34 INFO  revature.repositories.AccountDao:29 - Successfully inserted account with id: 8
+2021-09-08 19:47:34 INFO  revature.util.ConnectionUtil:51 - Returned re-used connection.
+2021-09-08 19:47:59 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-08 19:47:59 INFO  revature.services.UserService:40 - User Tester has successfully logged in.
+2021-09-08 19:48:43 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-08 19:48:54 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-08 19:48:55 INFO  revature.repositories.AccountDao:182 - Successfully activated account 8
+2021-09-08 19:48:55 INFO  com.revature.App:224 - Account 8 was approved by user 3
+2021-09-08 19:49:05 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-08 19:49:05 INFO  revature.services.UserService:40 - User Mary has successfully logged in.
+2021-09-08 19:49:05 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-08 19:49:52 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-08 19:49:52 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-08 19:49:52 INFO  revature.repositories.AccountDao:157 - Successfully updated balance of account 8 to 200.0
+2021-09-08 19:49:52 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-08 19:56:31 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-08 19:56:31 INFO  revature.services.UserService:40 - User Larry has successfully logged in.
+2021-09-08 19:56:37 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-08 19:57:06 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-08 19:57:06 INFO  revature.services.UserService:40 - User Larry has successfully logged in.
+2021-09-08 20:01:03 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-08 20:01:03 INFO  revature.services.UserService:40 - User Tester has successfully logged in.
+2021-09-08 20:04:58 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-08 20:04:58 INFO  revature.services.UserService:40 - User Tester has successfully logged in.
+2021-09-08 20:05:41 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-08 20:05:41 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-08 20:05:41 INFO  revature.repositories.AccountDao:157 - Successfully updated balance of account 7 to 24999.0
+2021-09-08 20:13:58 INFO  revature.services.UserService:18 - Registering new user....
+2021-09-08 20:13:59 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-08 20:13:59 INFO  revature.repositories.UserDao:35 - Successfully inserted User with id: 14
+2021-09-08 20:13:59 INFO  revature.services.UserService:29 - Registration of user with id 14 was successful.
+2021-09-08 20:13:59 INFO  revature.util.ConnectionUtil:51 - Returned re-used connection.
+2021-09-08 20:13:59 INFO  revature.repositories.AccountDao:29 - Successfully inserted account with id: 9
+2021-09-08 20:14:18 INFO  revature.util.ConnectionUtil:51 - Returned re-used connection.
+2021-09-08 20:14:18 INFO  revature.services.UserService:40 - User Bruce has successfully logged in.
+2021-09-08 20:14:18 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-08 20:17:17 INFO  revature.util.ConnectionUtil:81 - Database connection established.
+2021-09-08 20:17:17 INFO  revature.services.UserService:40 - User Mary has successfully logged in.
+2021-09-08 20:17:17 INFO  revature.util.ConnectionUtil:81 - Database connection established.

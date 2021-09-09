@@ -29,18 +29,23 @@ public class App {
 						+ "| $$  | $$   | $$   | $$\\  $ | $$      | $$    $$| $$        | $$  \n"
 						+ "| $$  | $$   | $$   | $$ \\/  | $$      |  $$$$$$/| $$$$$$$$ /$$$$$$\n"
 						+ "|__/  |__/   |__/   |__/     |__/       \\______/ |________/|______/");
-		System.out.println("Welcome to the ATM CLI, press 1 to login or 2 to register:");
+		System.out.print("Welcome to the ATM CLI.  ");
 		Scanner scan = new Scanner(System.in);
-		int input = scan.nextInt(); // need input mismatch try catch!!!!
-		while (input != 1 && input != 2) {
-			System.out.println("Please enter 1 to login or 2 to register");
-			input = scan.nextInt();
-		}
+		int input = 0;
+		do {
+			System.out.println("Please enter 1 to login or 2 to register:");
+		    while (!scan.hasNextInt()) {
+		        System.out.println("Please enter 1 to login or 2 to register:");
+		        scan.next();
+		    }
+		    input = scan.nextInt();
+		} while (input != 1 && input != 2);
 		if (input == 1 ) {
 			loginScript();
 		} else if (input == 2) {
 			registrationScript();
 		}
+		scan.close();
 	}
 	
 	public static void loginScript() {
@@ -81,17 +86,21 @@ public class App {
 			System.out.println(u.getUsername() + ", here are your active accounts with the ATM CLI:");
 			System.out.println(accounts);
 		}
-		System.out.println("Press 1 to deposit, 2 to withdraw, 3 to transfer, 4 to open a new account, "
-				+ "or 5 to exit:");
 		Scanner scan = new Scanner(System.in);
-		int input = scan.nextInt();
-		while (input != 1 && input != 2 && input != 3 && input != 4 && input != 5) {
+		int input = 0;
+		do {
 			System.out.println("Press 1 to deposit, 2 to withdraw, 3 to transfer, 4 to open a new account, "
-				+ "or 5 to exit:");
-			input = scan.nextInt();
-		}
+					+ "or 5 to exit:");
+		    while (!scan.hasNextInt()) {
+		        System.out.println("Press 1 to deposit, 2 to withdraw, 3 to transfer, 4 to open a new account, "
+						+ "or 5 to exit:");
+		        scan.next();
+		    }
+		    input = scan.nextInt();
+		} while (input != 1 && input != 2 && input != 3 && input != 4 && input != 5);
+		
 		if (input == 1) {
-			depositScript(u); // should pass entire user object to circle around?
+			depositScript(u);
 		} else if (input == 2) {
 			withdrawScript(u);
 		} else if (input == 3) {
@@ -103,6 +112,64 @@ public class App {
 			welcome();
 		}
 		
+	}
+	
+	public static void employeeMenu(User u) {
+		Scanner scan = new Scanner(System.in);
+		int input = 0;
+		do {
+			System.out.println("Employee menu: press 1 for user lookup, 2 for accounts lookup, 3 to approve applications, or 4 to exit:");
+		    while (!scan.hasNextInt()) {
+		        System.out.println("Please press 1 for user lookup, 2 for accounts lookup, 3 to approve applications, or 4 to exit:");
+		        scan.next();
+		    }
+		    input = scan.nextInt();
+		} while (input != 1 && input != 2 && input != 3 && input != 4);
+		
+		if (input == 1) {
+			userLookup(u);
+		} else if (input == 2) {
+			accountsLookup(u);
+		} else if (input == 3) {
+			approveService(u);
+		} else {
+			System.out.println("Have a nice day."); // exit
+			welcome();
+		}
+	}
+	
+	public static void adminMenu(User u) {
+		Scanner scan = new Scanner(System.in);
+		int input = 0;
+		do {
+			System.out.println("Admin menu: press 1 for user lookup, 2 for accounts lookup, 3 to approve applications, "
+					+ "\n4 to deposit, 5 to withdraw, 6 to transfer, 7 to delete account, or 8 to exit:");
+		    while (!scan.hasNextInt()) {
+		    	System.out.println("Press 1 for user lookup, 2 for accounts lookup, 3 to approve applications, "
+						+ "\n4 to deposit, 5 to withdraw, 6 to transfer, 7 to delete account, or 8 to exit:");
+		        scan.next();
+		    }
+		    input = scan.nextInt();
+		} while (input != 1 && input != 2 && input != 3 && input != 4 && input != 5 && input != 6 && input != 7 && input != 8);
+		
+		if (input == 1) {
+			userLookup(u);
+		} else if (input == 2) {
+			accountsLookup(u);
+		} else if (input == 3) {
+			approveService(u);
+		} else if (input == 4) {
+			depositScript(u);
+		} else if (input == 5) {
+			withdrawScript(u);
+		} else if (input == 6) {
+			transferScript(u);
+		} else if (input == 7) {
+			deleteScript(u);
+		} else {
+			System.out.println("Have a nice day."); // exit
+			welcome();
+		}
 	}
 	
 	public static void depositScript(User u) { // should take a user id
@@ -134,7 +201,7 @@ public class App {
 		AccountService aserv = new AccountService();
 		aserv.withdraw(id, amount); // should return some confirmation?
 		System.out.println("Withdraw successful, please login again to make another transaction.");
-		welcome();
+		customerMenu(u);
 	}
 	
 	public static void transferScript(User u) {
@@ -160,26 +227,6 @@ public class App {
 		aserv.open(u.getId());
 		System.out.println("Your account application was recieved and is pending approval.");
 		customerMenu(u);
-	}
-	
-	public static void employeeMenu(User u) {
-		System.out.println("Employee menu: press 1 for user lookup, 2 for accounts lookup, 3 to approve applications, or 4 to exit:");
-		Scanner scan = new Scanner(System.in);
-		int input = scan.nextInt();
-		while (input != 1 && input != 2 && input != 3 && input != 4) {
-			System.out.println("Press 1 for user lookup, 2 for accounts lookup, 3 to approve applications, or 4 to exit:");
-			input = scan.nextInt();
-		}
-		if (input == 1) {
-			userLookup(u);
-		} else if (input == 2) {
-			accountsLookup(u);
-		} else if (input == 3) {
-			approveService(u);
-		} else {
-			System.out.println("Have a nice day."); // exit
-			welcome();
-		}
 	}
 	
 	public static void userLookup(User u) {
@@ -217,36 +264,6 @@ public class App {
 			System.out.println("There was a problem activating account " + accId + ". Please try again.");
 		}
 		adminMenu(u);
-	}
-
-	public static void adminMenu(User u) {
-		System.out.println("Admin menu: press 1 for user lookup, 2 for accounts lookup, 3 to approve applications, "
-				+ "\n4 to deposit, 5 to withdraw, 6 to transfer, 7 to delete account, or 8 to exit:");
-		Scanner scan = new Scanner(System.in);
-		int input = scan.nextInt();
-		while (input != 1 && input != 2 && input != 3 && input != 4 && input != 5 && input != 6 && input != 7 && input != 8) {
-			System.out.println("Press 1 for user lookup, 2 for accounts lookup, 3 to approve applications, "
-					+ "\n4 to deposit, \n5 to withdraw, 6 to transfer, 7 to delete account, or 8 to exit:");
-			input = scan.nextInt();
-		}
-		if (input == 1) {
-			userLookup(u);
-		} else if (input == 2) {
-			accountsLookup(u);
-		} else if (input == 3) {
-			approveService(u);
-		} else if (input == 4) {
-			depositScript(u);
-		} else if (input == 5) {
-			withdrawScript(u);
-		} else if (input == 6) {
-			transferScript(u);
-		} else if (input == 7) {
-			deleteScript(u);
-		} else {
-			System.out.println("Have a nice day."); // exit
-			welcome();
-		}
 	}
 	
 	public static void deleteScript(User u) {
