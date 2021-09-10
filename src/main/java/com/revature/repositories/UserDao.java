@@ -46,7 +46,7 @@ public class UserDao implements IUserDao {
 	public User findByUserName(String username) {
 		User u = new User();
 		try (Connection conn = ConnectionUtil.getConnection()) {
-			String sql = "SELECT * FROM jochenp.users WHERE jochenp.users.username = ?;";
+			String sql = "SELECT * FROM users WHERE username = ?;";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, username);
 			ResultSet rs = stmt.executeQuery();
