@@ -35,24 +35,7 @@ SELECT * FROM jochenp.accounts;
 
 SELECT * FROM jochenp.accounts WHERE active = false;
 
-SELECT * FROM jochenp.users_accounts_jt;
-
 INSERT INTO jochenp.users (username, pwd, user_role)
 	VALUES ('Moe', 'admin', 'Admin');
 
-INSERT INTO jochenp.accounts (balance, acc_owner)
-	VALUES (500, 5), (1000, 6);
 
-INSERT INTO jochenp.users_accounts_jt
-	VALUES (1, 1),
-	(3, 3),
-	(5, 3),
-	(6, 4);
-	
-UPDATE accounts SET active = TRUE WHERE id = 3;
-
-SELECT balance FROM accounts WHERE id = 1;
-
-UPDATE users SET username = 'Robin', pwd = 'Holy...', user_role = 'Employee' WHERE id = 1 RETURNING id;
-
-DELETE FROM users WHERE username = 'Larry';
